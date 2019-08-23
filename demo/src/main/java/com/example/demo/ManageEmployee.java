@@ -3,9 +3,10 @@ package com.example.demo;
 import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class ManageEmployee {
     private static SessionFactory factory;
@@ -33,8 +34,6 @@ public class ManageEmployee {
         certSet2.add(new Certificate("A"));
 
         Integer employee2 = manageEmployee.addEmployee("merve" , "kertgl" , 20 , certSet2);
-
-
 
         manageEmployee.updateEmployee(1, 40);
 
@@ -91,11 +90,16 @@ public class ManageEmployee {
         Transaction tx = null;
 
         try {
-            tx = session.beginTransaction();
-            Criteria cr = session.createCriteria(Employee.class);
-            // Add restriction.
-            cr.add(Restrictions.gt("salary", 2000));
-            List employees = cr.list();
+//            tx = session.beginTransaction();
+//            Criteria cr = session.createCriteria(Employee.class);
+//            // Add restriction.
+//            cr.add(Restrictions.gt("salary", 2000));
+//            List employees = cr.list();
+//
+
+            String hql = "FROM Employee";
+            Query query = session.createQuery(hql,Employee.class);
+            List employees = query.list();
 
             for (Iterator iterator1 = employees.iterator(); iterator1.hasNext(); ) {
                 Employee employee = (Employee) iterator1.next();
@@ -103,15 +107,13 @@ public class ManageEmployee {
                 System.out.print("  Last Name: " + employee.getLastName());
                 System.out.println("  Salary: " + employee.getSalary());
 
-                java.util.Set<Certificate> certificateSet = (Set<Certificate>) employee.getCertificates();
+                List certificateSet =  employee.getCertificates();
 
                 for (Iterator iterator2 = certificateSet.iterator(); iterator2.hasNext(); ) {
                     Certificate name = (Certificate) iterator2.next();
                     System.out.println("Certificate : " + name.getName());
                 }
-
-            }
-
+        }
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();
