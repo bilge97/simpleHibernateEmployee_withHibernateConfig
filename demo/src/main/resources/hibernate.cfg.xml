@@ -23,13 +23,13 @@
             123456
         </property>
 
-        <property name="hibernate.connection.pool_size">5</property>
+        <property name="hibernate.connection.pool_size">10</property>
 
 
         <property name="current_session_context_class">
             thread
         </property>
-        
+
         <property name="hibernate.jdbc.lob.non_contextual_creation">
             true
         </property>
@@ -45,7 +45,7 @@
 
 
         <mapping class="com.example.demo.Employee"/>
-        <mapping class="com.example.demo.Address"/>
+        <mapping class="com.example.demo.Certificate"/>
 
     </session-factory>
 

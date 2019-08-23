@@ -1,9 +1,8 @@
 package com.example.demo;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
+
 
 @Entity
 public class Employee {
@@ -15,6 +14,17 @@ public class Employee {
     private String firstName;
     private String lastName;
     private int salary;
+
+    @OneToMany(cascade = {CascadeType.ALL})
+    private List<Certificate> certificates;
+
+    public List<Certificate> getCertificates() {
+        return certificates;
+    }
+
+    public void setCertificates(List<Certificate> certificates) {
+        this.certificates = certificates;
+    }
 
     public Employee() {
     }
@@ -55,5 +65,24 @@ public class Employee {
 
     public void setSalary(int salary) {
         this.salary = salary;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Employee employee = (Employee) o;
+
+        if (id != null ? !id.equals(employee.id) : employee.id != null) return false;
+        return certificates != null ? certificates.equals(employee.certificates) : employee.certificates == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (certificates != null ? certificates.hashCode() : 0);
+        return result;
     }
 }
